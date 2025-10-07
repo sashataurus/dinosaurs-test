@@ -1,29 +1,12 @@
 #include <gtest/gtest.h>
 #include <string>
+#include <iostream>
 #include <fstream>
 
-#include "dinosaurs.cpp"
-
-class DinosaursTest : public ::testing::Test {
-protected:
-    void SetUp() override {
-        std::ofstream cash_file("cash_test.txt");
-        cash_file << "100";
-        cash_file.close();
-        
-        std::ofstream dino_file("dino_numbers_test.txt");
-        dino_file << "123";
-        dino_file.close();
-    }
-    
-    void TearDown() override {
-        remove("cash_test.txt");
-        remove("dino_numbers_test.txt");
-    }
-};
+bool IsDead(int hp, int enemy_hp);
 
 // Тест 1: IsDead - игрок мертв когда hp <= 0
-TEST_F(DinosaursTest, IsDead_PlayerDeadWhenHPZero) {
+TEST(DinosaursTest, IsDead_PlayerDeadWhenHPZero) {
     // Arrange
     int player_hp = 0;
     int enemy_hp = 100;
@@ -36,7 +19,7 @@ TEST_F(DinosaursTest, IsDead_PlayerDeadWhenHPZero) {
 }
 
 // Тест 2: IsDead - игрок жив когда hp > 0
-TEST_F(DinosaursTest, IsDead_PlayerAliveWhenHPPositive) {
+TEST(DinosaursTest, IsDead_PlayerAliveWhenHPPositive) {
     // Arrange
     int player_hp = 50;
     int enemy_hp = 100;
@@ -49,7 +32,7 @@ TEST_F(DinosaursTest, IsDead_PlayerAliveWhenHPPositive) {
 }
 
 // Тест 3: IsDead - оба hp = 0
-TEST_F(DinosaursTest, IsDead_BothHPZero) {
+TEST(DinosaursTest, IsDead_BothHPZero) {
     // Arrange
     int player_hp = 0;
     int enemy_hp = 0;
@@ -61,29 +44,31 @@ TEST_F(DinosaursTest, IsDead_BothHPZero) {
     EXPECT_TRUE(result);
 }
 
-// Тест 4: Валидация денег
-TEST_F(DinosaursTest, MoneyValidation_CanAfford) {
+// Тест 4: Валидация денег - хватает
+TEST(DinosaursTest, MoneyValidation_CanAfford) {
     // Arrange
     int current_cash = 100;
     int dino_price = 21;
     
     // Act & Assert
-    bool can_afford = current_cash >= dino_price;
-    EXPECT_TRUE(can_afford);
+    EXPECT_TRUE(current_cash >= dino_price);
 }
 
-// Тест 5: Валидация денег - недостаточно
-TEST_F(DinosaursTest, MoneyValidation_CannotAfford) {
+// Тест 5: Валидация денег - не хватает
+TEST(DinosaursTest, MoneyValidation_CannotAfford) {
     // Arrange
     int current_cash = 10;
     int dino_price = 21;
     
     // Act & Assert
-    bool can_afford = current_cash >= dino_price;
-    EXPECT_FALSE(can_afford);
+    EXPECT_FALSE(current_cash >= dino_price);
 }
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    
+    int testResult = RUN_ALL_TESTS();
+    
+    return testResult;
 }
