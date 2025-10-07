@@ -2,7 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <windows.h>
+#include <chrono>
+#include <thread>
 #include <cstdlib>
 #include <ctime>
 #include <random>
@@ -190,21 +191,21 @@ bool Round(sf::RenderWindow& window, std::string pool, std::string enemy_pool) {
             enemy_hp = enemy_hp - damage2;
         }
 
-        Sleep(1000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
         if (hp <= 0 || enemy_hp <= 0) {
             if (IsDead(hp, enemy_hp)) {
                 PrintPicture(window, file_dino1_4, 400, 300, sf::Vector2f(450.0f, 450.0f));
                 PrintText(window, "WINNER", 1200, 800, 55, sf::Color::Cyan);
                 window.display();
-                Sleep(1000);
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                 return false;
             }
             else {
                 PrintText(window, "WINNER", 500, 800, 55, sf::Color::Cyan);
                 PrintPicture(window, file_dino2_4, 1100, 300, sf::Vector2f(450.0f, 450.0f));
                 window.display();
-                Sleep(1000);
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                 return true;
             }
 
@@ -280,7 +281,7 @@ void Fight(sf::RenderWindow& window) {
             }
         }
 
-        Sleep(1000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         window.display();
 
         Menu(window);
